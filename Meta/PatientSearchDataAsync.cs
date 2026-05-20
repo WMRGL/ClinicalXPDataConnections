@@ -95,5 +95,12 @@ namespace ClinicalXPDataConnections.Meta
 
             return await patients.ToListAsync();
         }
+
+        public async Task<List<Patient>> GetPatientsListByExternalID(string extID)
+        {
+            IQueryable<Patient> patients = _clinContext.Patients.Where(p => p.ExternalID.Contains(extID));
+
+            return await patients.ToListAsync();
+        }
     }
 }
