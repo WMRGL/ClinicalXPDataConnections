@@ -15,6 +15,7 @@ namespace ClinicalXPDataConnections.Meta
         public Task<List<Patient>> GetPatientsListByStaffCode(string staffCode);
         public Task<List<Patient>> GetPatientsListByTelNo(string telNo);
         public Task<List<Patient>> GetPatientsListByEmail(string email);
+        public Task<List<Patient>> GetPatientsListByExternalID(string extID);
         //the reason for multiple "GetPatientsLists", and not one with multiple parameters, is because in order to do that,
         //the "patients" list would have to be created first and then narrowed by criteria.
         //This would result in very long loading times, as there are a LOT of patients, and I don't really want to select them all
