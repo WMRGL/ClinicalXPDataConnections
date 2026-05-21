@@ -896,6 +896,7 @@ namespace ClinicalXPDataConnections.Models
         public string Clinician { get; set; }
         public string Facility { get; set; }
         public string? Comment { get; set; }
+        public int? ApptRefID { get; set; }
     }
 
     //Views rather than tables are used so we can have useful data available in the front end

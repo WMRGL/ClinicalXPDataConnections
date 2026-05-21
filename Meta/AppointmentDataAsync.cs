@@ -15,6 +15,7 @@ namespace ClinicalXPDataConnections.Meta
         public Task<List<Appointment>> GetAppointmentsByClinicians(string staffCode, DateTime? startDate, DateTime? endDate);
         public Task<List<Appointment>> GetMDC(string staffCode, DateTime? startDate, DateTime? endDate);
         public Task<List<Appointment>> GetAppointmentsByClinic(string staffCode, string clinic, DateTime? startDate, DateTime? endDate);
+        public Task<List<Appointment>> GetAppointmentsByClinicCode(string staffCode, string clinic, DateTime? startDate, DateTime? endDate);
         public Task<List<Appointment>> GetAppointmentsByMonth(string staffCode, int month, int year);
         public Task<List<Appointment>> GetAppointmentListByReferral(int refID);
         public Task<List<Appointment>> GetAppointmentListByPatient(int mpi);
@@ -141,6 +142,21 @@ namespace ClinicalXPDataConnections.Meta
             apt = apt.Where(a => a.BOOKED_DATE < endDate);
 
             return await apt.ToListAsync();
+        }
+
+        public async Task<List<Appointment>> GetAppointmentsByClinicCode(string staffCode, string clinic, DateTime? startDate, DateTime? endDate)
+        {
+            var apt = _context.Clinics.Where(a => (a.STAFF_CODE_1 == staffCode ||
+                                                    a.STAFF_CODE_2 == staffCode ||
+                                                    a.STAFF_CODE_3 == staffCode)
+                                                    && a.FACILITY == clinic);
+
+            apt = apt.Where(a => a.BOOKED_DATE > startDate);
+            Console.WriteLine(apt.Count());
+            apt = apt.Where(a => a.BOOKED_DATE < endDate);
+            Console.WriteLine(apt.Count());
+
+            return apt.ToList();
         }
 
         public async Task<List<Appointment>> GetAppointmentsByMonth(string staffCode, int month, int year)
