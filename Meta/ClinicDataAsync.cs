@@ -14,6 +14,7 @@ namespace ClinicalXPDataConnections.Meta
         public Task<Appointment> GetClinicDetails(int refID);
         public Task<List<Outcome>> GetOutcomesList();
         public Task<List<Ethnicity>> GetEthnicitiesList();
+        public Task<List<Appointment>> GetUnknownClinicians();
     }
     public class ClinicDataAsync : IClinicDataAsync
     {
@@ -93,7 +94,15 @@ namespace ClinicalXPDataConnections.Meta
                          select e;
 
             return await ethnicities.ToListAsync();
-        }     
-        
+        }
+
+        public async Task<List<Appointment>> GetUnknownClinicians()
+        {
+            IQueryable<Appointment> appts = from c in _clinContext.Clinics
+                                            where c.Clinician == "Unknown Consultant"
+
+                                            select c;
+            return await appts.ToListAsync();
+        }
     }
 }
