@@ -562,7 +562,7 @@ namespace ClinicalXPDataConnections.Meta
                     spacer = section.AddParagraph();
                     content3 = _lvm.documentsContent.Para3;
                     Paragraph letterContent3 = section.AddParagraph(content3);
-                    signOff = "CGU Booking Centre";                    
+                    signOff = "CGU Booking Centre";
                 }
 
                 //K letters
@@ -796,7 +796,7 @@ namespace ClinicalXPDataConnections.Meta
                     }
                     Paragraph letterContent3 = section.AddParagraph(content3);
                     spacer = section.AddParagraph();
-                    Paragraph letterContent4 = section.AddParagraph(content4);                    
+                    Paragraph letterContent4 = section.AddParagraph(content4);
                 }
 
                 //O1a
@@ -848,7 +848,7 @@ namespace ClinicalXPDataConnections.Meta
                         spacer = section.AddParagraph();
                     }
                     Paragraph letterContent5 = section.AddParagraph(content5);
-                    spacer = section.AddParagraph();                    
+                    spacer = section.AddParagraph();
                 }
 
                 //O1c
@@ -877,7 +877,7 @@ namespace ClinicalXPDataConnections.Meta
                     {
                         Paragraph letterContent3 = section.AddParagraph(content3);
                         spacer = section.AddParagraph();
-                    }                    
+                    }
                 }
 
                 //O2
@@ -946,7 +946,7 @@ namespace ClinicalXPDataConnections.Meta
                     {
                         Paragraph letterContent5 = section.AddParagraph(content5);
                         spacer = section.AddParagraph();
-                    }                    
+                    }
                 }
 
                 //O2a
@@ -1001,7 +1001,7 @@ namespace ClinicalXPDataConnections.Meta
                     {
                         Paragraph letterContent5 = section.AddParagraph(content5);
                         spacer = section.AddParagraph();
-                    }                    
+                    }
                 }
 
                 //O2d
@@ -1015,7 +1015,7 @@ namespace ClinicalXPDataConnections.Meta
                     Paragraph letterContent2 = section.AddParagraph(content2);
                     spacer = section.AddParagraph();
                     Paragraph letterContent3 = section.AddParagraph(content3);
-                    spacer = section.AddParagraph();                    
+                    spacer = section.AddParagraph();
                 }
 
                 //O3
@@ -1049,7 +1049,7 @@ namespace ClinicalXPDataConnections.Meta
                     Paragraph letterContent4 = section.AddParagraph(content4);
                     spacer = section.AddParagraph();
                     Paragraph letterContent5 = section.AddParagraph(content5);
-                    spacer = section.AddParagraph();                    
+                    spacer = section.AddParagraph();
                 }
 
                 //O3a
@@ -1067,7 +1067,7 @@ namespace ClinicalXPDataConnections.Meta
                     Paragraph letterContent3 = section.AddParagraph(content3);
                     spacer = section.AddParagraph();
                     Paragraph letterContent4 = section.AddParagraph(content4);
-                    spacer = section.AddParagraph();                    
+                    spacer = section.AddParagraph();
                 }
 
                 //O4
@@ -1155,7 +1155,7 @@ namespace ClinicalXPDataConnections.Meta
                     Paragraph letterContent4 = section.AddParagraph(content3);
                     spacer = section.AddParagraph();
                     Paragraph letterContent5 = section.AddParagraph(content4);
-                    spacer = section.AddParagraph();                    
+                    spacer = section.AddParagraph();
                 }
 
                 //O4am
@@ -1250,7 +1250,7 @@ namespace ClinicalXPDataConnections.Meta
                     spacer = section.AddParagraph();
                     Paragraph letterContent4 = section.AddParagraph(content4);
 
-                    spacer = section.AddParagraph();                   
+                    spacer = section.AddParagraph();
                 }
 
                 //MR01
@@ -1425,7 +1425,7 @@ namespace ClinicalXPDataConnections.Meta
                     spacer = section.AddParagraph();
 
                     enclosures = "copy of completed consent form (Letter code CF04)";
-                    
+
                     ccs[0] = recipient; //overrides the standard one
                 }
 
@@ -1670,14 +1670,14 @@ namespace ClinicalXPDataConnections.Meta
                     Paragraph letterContent1 = section.AddParagraph(content1);
                     spacer = section.AddParagraph();
                     Paragraph letterContent2 = section.AddParagraph(content2);
-                    spacer = section.AddParagraph();                    
+                    spacer = section.AddParagraph();
                     ccs[1] = otherName;
                 }
 
                 //Clics letters
                 if (docCode == "ClicsFHF")
                 {
-                    content1 = _lvm.documentsContent.Para1;
+                    content1 = referrerName + " " + _lvm.documentsContent.Para1;
                     content2 = _lvm.documentsContent.Para2;
                     content3 = _lvm.documentsContent.Para3;
                     content4 = _lvm.documentsContent.Para4;
@@ -1689,17 +1689,17 @@ namespace ClinicalXPDataConnections.Meta
                     spacer = section.AddParagraph();
                     Paragraph letterContent4 = section.AddParagraph(content4);
                     spacer = section.AddParagraph();
-                   
+
                     ccs[0] = "RD";
                     if (referrerName != gpName)
-                    {                       
+                    {
                         ccs[1] = "GP";
                     }
                 }
 
                 if (docCode == "ClicsRem")
                 {
-                    content1 = _lvm.documentsContent.Para1;
+                    content1 = referrerName + " " + _lvm.documentsContent.Para1;
                     content2 = _lvm.documentsContent.Para2;
                     content3 = _lvm.documentsContent.Para3;
                     Paragraph letterContent1 = section.AddParagraph(content1);
@@ -1707,7 +1707,7 @@ namespace ClinicalXPDataConnections.Meta
                     Paragraph letterContent2 = section.AddParagraph(content2);
                     spacer = section.AddParagraph();
                     Paragraph letterContent3 = section.AddParagraph(content3);
-                    spacer = section.AddParagraph();                    
+                    spacer = section.AddParagraph();
                 }
 
                 if (docCode == "ClicsStop")
@@ -1723,7 +1723,7 @@ namespace ClinicalXPDataConnections.Meta
                     spacer = section.AddParagraph();
                     ccs[0] = "RD";
                     if (referrerName != gpName)
-                    {                        
+                    {
                         ccs[1] = "GP";
                     }
                 }
