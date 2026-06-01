@@ -260,6 +260,7 @@ namespace ClinicalXPDataConnections.Models
         public string? CancellationReason { get; set; }
         public DateTime? OUTCOME_ENTERED { get; set; }
         public string? Comments { get; set; }
+        public string? Location { get; set; }
     }
 
     [Table("ViewPatientReferralDetails", Schema = "dbo")] //Referral data
@@ -384,6 +385,7 @@ namespace ClinicalXPDataConnections.Models
         public int? RefID { get; set; }
         public string? LetterFrom { get; set; }
         public string? LetterTo { get; set; }
+        public string? DocName { get; set; }
     }
 
     [Table("ViewTriageDetails", Schema = "dbo")] //Cases to be triaged
