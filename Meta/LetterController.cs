@@ -1,6 +1,7 @@
 ﻿using ClinicalXPDataConnections.Data;
 using ClinicalXPDataConnections.Models;
 using ClinicalXPDataConnections.ViewModels;
+using HtmlAgilityPack;
 //using Microsoft.Office.Interop.Outlook;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
@@ -9,7 +10,11 @@ using PdfSharpCore.Drawing;
 using PdfSharpCore.Drawing.Layout;
 using PdfSharpCore.Pdf;
 using System.Drawing;
+using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace ClinicalXPDataConnections.Meta
@@ -153,7 +158,9 @@ namespace ClinicalXPDataConnections.Meta
 
             if (letterContent.Contains("</"))
             {
-                letterContent = RemoveHTML(letterContent);
+                //letterContent = RemoveHTML(letterContent);
+                letterContent = CleanWordHtmlToText(letterContent);
+                //letterContent = ConvertToPlainText()
             }
 
             Paragraph contentLetterContent = section.AddParagraph();
@@ -2416,19 +2423,112 @@ namespace ClinicalXPDataConnections.Meta
             }
         }
 
-        string RemoveHTML(string text)
+        public static string CleanWordHtmlToText(string dirtyHtml)
+        {
+            if (string.IsNullOrWhiteSpace(dirtyHtml))
+                return string.Empty;
+
+            dirtyHtml = dirtyHtml.Replace("<b>", "[[strong]]"); //we have to do this, or the bold tags will get wiped by the "everything" tag
+            dirtyHtml = dirtyHtml.Replace("</b>", "[[/strong]]");
+            dirtyHtml = dirtyHtml.Replace("<strong>", "[[strong]]");
+            dirtyHtml = dirtyHtml.Replace("</strong>", "[[/strong]]");
+
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(dirtyHtml);
+
+            var sb = new StringBuilder();
+            using (var sw = new StringWriter(sb))
+            {
+                ConvertToPlainText(htmlDoc.DocumentNode, sw);
+                sw.Flush();
+            }
+
+            string result = WebUtility.HtmlDecode(sb.ToString()).Trim();
+
+            // 1. Strip out Word's internal hard line breaks that split sentences in half
+            result = result.Replace("\r", "").Replace("\n", " ");
+
+            // 2. Clear out heavy duplicate spaces left behind
+            result = Regex.Replace(result, @"[ ]{2,}", " ");
+
+            // 3. THE FIX: Convert tokens into single or double line breaks exactly as preferred
+            result = result.Replace("__REAL_DOUBLE_BREAK__", Environment.NewLine + Environment.NewLine);
+            result = result.Replace("__REAL_SINGLE_BREAK__", Environment.NewLine);
+
+            // 4. Clean up any trailing spaces sitting at the start of new lines
+            result = Regex.Replace(result, @"(?<=\r?\n)[ ]+", "");
+
+            // 5. Final polish: If three or more newlines clump up together, scale them back to a double break
+            return Regex.Replace(result, @"(\r?\n){3,}", Environment.NewLine + Environment.NewLine).Trim();
+        }
+
+        private static void ConvertToPlainText(HtmlNode node, TextWriter writer)
+        {
+            switch (node.NodeType)
+            {
+                case HtmlNodeType.Comment:
+                    break;
+
+                case HtmlNodeType.Document:
+                case HtmlNodeType.Element:
+                    string name = node.Name.ToLower();
+                    if (name == "script" || name == "style" || name == "head" || name == "title" || name == "xml")
+                        break;
+
+                    if (node.HasChildNodes)
+                    {
+                        foreach (var child in node.ChildNodes)
+                        {
+                            ConvertToPlainText(child, writer);
+                        }
+                    }
+
+                    // Differentiate between standalone breaks (<br>) and major block items (<p>, <li>, <div>)
+                    if (name == "br")
+                    {
+                        writer.Write("__REAL_SINGLE_BREAK__");
+                    }
+                    else if (name == "p" || name == "div" || name == "tr" || name == "h1" || name == "h2" || name == "h3" || name == "li")
+                    {
+                        writer.Write("__REAL_DOUBLE_BREAK__");
+                    }
+                    break;
+
+                case HtmlNodeType.Text:
+                    string text = ((HtmlTextNode)node).Text;
+                    if (!string.IsNullOrWhiteSpace(text))
+                    {
+                        writer.Write(text);
+                    }
+                    break;
+            }
+        }
+
+
+
+        string RemoveHTML(string text) //possibly depreciated, since I can't get this to work cleanly!
         {
             //text = text.Replace("<div>", "");
+            text = text.Replace("  ", " "); //because of the stupid double spaces, which are now causing line breaks for some reason!!!!!
+
             text = text.Replace("<div><br></div>", "newline");
             text = text.Replace("</div>", "newline");
+
+            //what utter fucking bullshit!!!
+            //this line is making certain spaces now cause line breaks, for some reason - but only sometimes!!!
             text = text.Replace(Environment.NewLine, "newline");
+            //I can't eliminate all of the single line breaks because that will fuck up all other letters!!!
+            //WHY YOU GOTTA DO THIS TO ME???????
+
             text = text.Replace("<div>&nbsp;</div>", "newline");
             text = text.Replace("newlinenewlinenewlinenewlinenewlinenewlinenewlinenewline", Environment.NewLine + Environment.NewLine); //don't fucking ask!!!
             text = text.Replace("newlinenewlinenewlinenewlinenewlinenewline", Environment.NewLine + Environment.NewLine);
             text = text.Replace("newlinenewlinenewlinenewline", Environment.NewLine + Environment.NewLine);
             text = text.Replace("newlinenewlinenewline", Environment.NewLine); //because there are SOOOOO many different ways of getting line breaks!!
-            //text = text.Replace("newlinenewline", System.Environment.NewLine);
+            text = text.Replace("newlinenewline", System.Environment.NewLine);
+
             text = text.Replace("newline", System.Environment.NewLine);
+
             text = text.Replace("&nbsp;", " ");
 
             text = text.Replace("&amp;", "&");
