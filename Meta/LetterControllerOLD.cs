@@ -13,13 +13,14 @@ using System.Drawing;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
 using static System.Net.Mime.MediaTypeNames;
 
 
 namespace ClinicalXPDataConnections.Meta
 {
 
-    public class LetterController
+    public class LetterControllerOLD
     {
         private readonly ClinicalContext _clinContext;
         private readonly DocumentContext _docContext;
@@ -38,7 +39,7 @@ namespace ClinicalXPDataConnections.Meta
         private readonly IAlertData _alertData;
         private readonly ISurveillanceDataAsync _survData;
 
-        public LetterController(ClinicalContext clinContext, DocumentContext docContext) //to be used for testing only
+        public LetterControllerOLD(ClinicalContext clinContext, DocumentContext docContext) //to be used for testing only
         {
             _clinContext = clinContext;
             _docContext = docContext;
@@ -897,15 +898,8 @@ namespace ClinicalXPDataConnections.Meta
                     {
                         foreach (var item in screening)
                         {
-                            if (item.UseLetter.GetValueOrDefault())
-                            {
-                                contentscreening += item.SurvSite + " surveillance " + item.SurvFreq + " by " + item.SurvType + " from the age of " + item.SurvStartAge.ToString();
-                                if (item.SurvStopAge != 0)
-                                {
-                                    contentscreening += " to " + item.SurvStopAge.ToString();
-                                }
-                                contentscreening += Environment.NewLine;
-                            }
+                            contentscreening += item.SurvSite + " surveillance " + item.SurvFreq + " by " + item.SurvType + " from the age of " + item.SurvStartAge.ToString() + " to " +
+                                item.SurvStopAge.ToString() + Environment.NewLine;
                         }
                     }
 
@@ -1044,15 +1038,11 @@ namespace ClinicalXPDataConnections.Meta
 
                     foreach (var item in _riskList)
                     {
-                        if (item.IncludeLetter.GetValueOrDefault() > 0)
+                        _surv = _survData.GetSurvDetails(item.RiskID);
+                        content2 = item.SurvSite + " surveillance " + " by " + item.SurvType + " " + item.SurvFreq + " from the age of " + item.SurvStartAge.ToString(); //TODO - get this to display properly
+                        if (item.SurvStopAge != null)
                         {
-                            _surv = _survData.GetSurvDetails(item.RiskID);
-
-                            content2 = item.SurvSite + " surveillance " + " by " + item.SurvType + " " + item.SurvFreq + " from the age of " + item.SurvStartAge.ToString(); //TODO - get this to display properly
-                            if (item.SurvStopAge != 0)
-                            {
-                                content2 += " to " + item.SurvStopAge.ToString();
-                            }
+                            content2 = content2 + " to " + item.SurvStopAge.ToString();
                         }
                     }
                     content3 = _lvm.documentsContent.Para3;
@@ -1075,7 +1065,7 @@ namespace ClinicalXPDataConnections.Meta
                     content1 = _lvm.documentsContent.Para1;
                     content2 = _lvm.documentsContent.Para2;
                     content3 = _lvm.documentsContent.Para3;
-                    //content4 = _lvm.documentsContent.Para9; //apparently this paragraph shouldn't be there
+                    content4 = _lvm.documentsContent.Para9;
 
                     Paragraph letterContent1 = section.AddParagraph(content1);
                     spacer = section.AddParagraph();
@@ -1083,8 +1073,8 @@ namespace ClinicalXPDataConnections.Meta
                     spacer = section.AddParagraph();
                     Paragraph letterContent3 = section.AddParagraph(content3);
                     spacer = section.AddParagraph();
-                    //Paragraph letterContent4 = section.AddParagraph(content4);
-                    //spacer = section.AddParagraph();
+                    Paragraph letterContent4 = section.AddParagraph(content4);
+                    spacer = section.AddParagraph();
                 }
 
                 //O4
