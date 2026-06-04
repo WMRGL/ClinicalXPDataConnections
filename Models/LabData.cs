@@ -78,6 +78,7 @@ namespace ClinicalXPDataConnections.Models
         public string? ZIP { get; set; }
         public string? SOCIAL_SECURITY { get; set; }
         public DateTime? DOB { get; set; }
+        public string? ALTHOSPNO { get; set; }
     }
 
     [Table("REF_FAC", Schema = "dbo")]

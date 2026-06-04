@@ -802,6 +802,7 @@ namespace ClinicalXPDataConnections.Models
         public DateTime? BookedDate { get; set; }
         public DateTime? BookedTime { get; set; }
         public string? State { get; set; }
+        public string? Pathway { get; set; }
         public string? CGU_No { get; set; }
         public string? Name { get; set; }
         public string Clinician { get; set; }
@@ -865,6 +866,7 @@ namespace ClinicalXPDataConnections.Models
         public bool SurvDisc { get; set; }
         public DateTime? SurvDiscDate { get; set; }
         public string? SurvDiscReason { get; set; }
+        public bool? UseLetter { get; set; }
     }
 
     [Table("ListICPCancerReviewActions", Schema = "dbo")]
