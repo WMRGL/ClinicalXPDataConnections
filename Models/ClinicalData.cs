@@ -770,6 +770,7 @@ namespace ClinicalXPDataConnections.Models
         public string? Enclosures { get; set; }
         public DateTime? ApprovedDate { get; set; }
         public string? ApprovedBy { get; set; }
+        public bool IsUrgent { get; set; }
     }
 
     [Table("DictatedLettersPatients", Schema = "dbo")] //Patients added to DOT
