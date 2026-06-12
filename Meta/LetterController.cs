@@ -351,6 +351,10 @@ namespace ClinicalXPDataConnections.Meta
 
                 Paragraph spacer = section.AddParagraph();
 
+                if(_lvm.documentsContent.LetterFrom == "Logon")
+                {
+                    signOff = _lvm.staffMember.NAME;
+                }
 
                 if (!_lvm.documentsContent.LetterTo.Contains("CF"))
                 {
