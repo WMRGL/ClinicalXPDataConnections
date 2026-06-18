@@ -349,12 +349,7 @@ namespace ClinicalXPDataConnections.Meta
                 Row row3 = table.AddRow();
                 row3.VerticalAlignment = VerticalAlignment.Center;
 
-                Paragraph spacer = section.AddParagraph();
-
-                if(_lvm.documentsContent.LetterFrom == "Logon")
-                {
-                    signOff = _lvm.staffMember.NAME;
-                }
+                Paragraph spacer = section.AddParagraph();                
 
                 if (!_lvm.documentsContent.LetterTo.Contains("CF"))
                 {
@@ -486,7 +481,7 @@ namespace ClinicalXPDataConnections.Meta
                         sigFilename = cons.StaffForename + cons.StaffSurname.Replace("'", "").Replace(" ", "") + ".jpg";
                         break;
                     case "Logon":
-                        //signOff = _lvm.staffMember.NAME + Environment.NewLine + _lvm.staffMember.POSITION;
+                        signOff = _lvm.staffMember.NAME + Environment.NewLine + _lvm.staffMember.POSITION;
                         break;
                     default:
                         signOff = "";

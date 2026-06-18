@@ -453,6 +453,7 @@ namespace ClinicalXPDataConnections.Models
         public int ICPID { get; set; }
         public int REFID { get; set; }
         public int MPI { get; set; }
+        public bool Triaged { get; set; }
     }
 
     [Table("ICP_General", Schema = "dbo")] //General ICP
