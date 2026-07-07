@@ -844,6 +844,36 @@ namespace ClinicalXPDataConnections.Models
         public int ICP_Cancer_ID { get; set; }
     }
 
+    [Table("ViewPatientRiskDetails", Schema = "dbo")] //Cancer risk items - because we need it without the surveillance, to stop the duplication!!!
+    public class PatientRisk
+    {
+        [Key]
+        public int RiskID { get; set; }
+        public int RefID { get; set; }
+        public int MPI { get; set; }
+        public string CGU_No { get; set; }
+        public string? FIRSTNAME { get; set; }
+        public string? LASTNAME { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? RiskDate { get; set; }
+        public string? RiskCode { get; set; }
+        public string? RiskName { get; set; }
+        public string? RiskClinCode { get; set; }
+        public string? RiskComments { get; set; }
+        public Int16? IncludeLetter { get; set; }
+        public double? R25_29 { get; set; }
+        public double? R30_40 { get; set; }
+        public double? R40_50 { get; set; }
+        public double? R50_60 { get; set; }
+        public string? CalculationToolUsed { get; set; }
+        public string? SurvSiteCode { get; set; }
+        public string? SurvSite { get; set; }        
+        public double? LifetimeRiskPercentage { get; set; }        
+        public string? Clinician { get; set; }
+        public int ICPID { get; set; }
+        public int ICP_Cancer_ID { get; set; }
+    }
+
     [Table("ViewPatientSurveillance", Schema = "dbo")] //Surveillance recommendations
     public class Surveillance
     {
