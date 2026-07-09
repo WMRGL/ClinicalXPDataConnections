@@ -162,7 +162,12 @@ namespace ClinicalXPDataConnections.Models
         public bool NotReturned { get; set; }
         public string? DiaryText { get; set; }
         public string? LetterExtra { get; set; }
-
+        public string? DiaryWith { get; set; }
+        public string? SourceCode { get; set; }
+        public DateTime? DiaryRem1 { get; set; }
+        public DateTime? DiaryRem2 { get; set; }
+        public string? StandReasonCode { get; set; }
+        public string? RelDiaryClinCode { get; set; }
     }
 
     [Table("RelativesDiagnosis")]
@@ -867,8 +872,8 @@ namespace ClinicalXPDataConnections.Models
         public double? R50_60 { get; set; }
         public string? CalculationToolUsed { get; set; }
         public string? SurvSiteCode { get; set; }
-        public string? SurvSite { get; set; }        
-        public double? LifetimeRiskPercentage { get; set; }        
+        public string? SurvSite { get; set; }
+        public double? LifetimeRiskPercentage { get; set; }
         public string? Clinician { get; set; }
         public int ICPID { get; set; }
         public int ICP_Cancer_ID { get; set; }
@@ -1329,5 +1334,31 @@ namespace ClinicalXPDataConnections.Models
         public string? EpicClinicCode { get; set; }
         public string? Location { get; set; }
     }
-    
+
+    [Table("ViewListRelativeDiarySource", Schema = "dbo")]
+    public class RelativeDiarySource
+    {
+        [Key]
+        public string Code { get; set; }
+        public string? Name { get; set; }
+        public string? Address { get; set; }
+        public string? TYPE { get; set; }
+        public string? Active { get; set; }
+    }
+
+    [Table("ListDiaryAction", Schema = "dbo")]
+    public class DiaryAction
+    {
+        [Key]
+        public string ActionCode { get; set; }
+        public string? Action { get; set; }
+    }
+
+    [Table("ViewDiaryCliniciansList", Schema = "dbo")]
+    public class DiaryClinician
+    {
+        [Key]
+        public string Code { get; set; }
+        public string Name { get; set; }
+    }
 }
